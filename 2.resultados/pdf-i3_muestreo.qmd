@@ -1,0 +1,41 @@
+---
+title: "Interrogación 3"
+subtitle: "EYP2417 - Muestreo"
+format: 
+  pdf: 
+    include-in-header: 
+      text: |
+        \usepackage{amsmath}
+        \usepackage{float}
+    colorlinks: true
+    geometry:
+      - top=20mm
+      - left=20mm
+      - right=20mm
+      - heightrounded
+    fig-pos: "H"
+author: 
+  - name: "Camila Echeverría"
+  - name: "Francisca Vilca"
+crossref:
+  fig-title: Figura
+  fig-prefix: Figura
+  tbl-title: Tabla
+  tbl-prefix: Tabla
+tbl-cap-location: bottom
+---
+
+## Diseño Muestral
+
+Muestreo de conglomerados en dos etapas, estratificadas por zona (considera solo viviendas urbanas – censo 2017). Primeramente, se obtiene una muestra aleatoria simple de manzanas al interior de cada estrato y de cada manzana se obtiene una muestra aleatoria de viviendas. Al interior de cada vivienda se selecciona un elector según la técnica del “cumpleaños”. No se realiza actualización del número de viviendas de la manzana seleccionada. 
+
+a) Obtenga las respectivas probabilidades de selección y los factores de expansión según Zona, sexo y cat.Edad de acuerdo con el diseño muestral. Contraste los resultados obtenidos con la información censal proyectada al año 2021. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) ponderado y sin ponderar – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo). **(1.0 punto)**
+
+b) Para la base ponderada, obtenga los g-weigths (%pob / %muestral) según zona y sexo–cat.edad. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo).**(1.0 punto)**
+
+c) Para la base sin ponderar, usando la distribución GSE según zona, más la proyección censal realice un rastrillado (raking) según **zona – sexo – cat.edad – GSE** (total) que le permita 
+obtener una nueva ponderación. Reproduzca los cruces de b) y contraste con lo obtenido previamente y comente (un párrafo). **(1.0 punto)**
+
+d) Literalmente, hasta el momento se trabaja con el supuesto de cómo se comportarán los poco más de 15 millones de chilenos. Sin embargo, hubo una abstención importante y se pueden ver discrepancias entre los resultados de la elección en 1era vuelta y los valores obtenidos en la encuesta (P1v). Realice un rastrillado que considere estos resultados. Es decir, lleve a cabo un “raking” según **zona – sexo – cat.edad – Voto** (total ver tabla). Reproduzca los cruces de b) y contraste con lo obtenido previamente y comente (un párrafo). **(1.0 punto)**
+
+e) Considerando todos los resultados previos, realice predicciones para Total Poblacional (15.200.840), de tal manera que muestre el número de votos de cada candidato bajo cada ponderador (a, b, c y d). Comente (un párrafo). **(2.0 puntos)**
