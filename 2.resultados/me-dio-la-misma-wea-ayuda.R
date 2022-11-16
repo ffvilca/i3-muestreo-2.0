@@ -134,7 +134,17 @@ fexpntv <- 1/select.edad[[3]]
 fexpv <- 1/select.edad[[4]]
 
 
-
 # Probabilidades conjuntas ------------------------------------------------
 
+pepito <- censo_limpio %>% 
+  select(Zona, Sexo, cat.edad, Poblacion_2021) %>% 
+  group_by(Zona, Sexo, cat.edad) %>% 
+  summarise(Pob_grupo = sum(Poblacion_2021))
 
+juanito <- datos %>% 
+  select(zona, sexo, cat.edad) %>% 
+  count(zona, sexo, cat.edad)
+
+prob <- juanito$n/pepito$Pob_grupo
+
+fexp <- 1/prob
