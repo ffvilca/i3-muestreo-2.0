@@ -24,12 +24,20 @@ crossref:
   tbl-prefix: Tabla
 tbl-cap-location: bottom
 ---
+# Análisis de la elección presidencial del año 2021
+
+En el siguiente informe, se darán a conocer algunos resultados interesantes, con respecto a las elecciones presidenciales del año 2021, se analizará al votante de 1ra Vuelta con respecto a sus características como el Sexo, Edad y GSE, además se intentarán proyectar los resultados de 2da Vuelta, para ellos se usarán diferentes técnicas de muestreo y de balanceo para que los resultados sean lo más verosimiles a la realidad.
 
 ## Diseño Muestral
 
-Muestreo de conglomerados en dos etapas, estratificadas por zona (considera solo viviendas urbanas – censo 2017). Primeramente, se obtiene una muestra aleatoria simple de manzanas al interior de cada estrato y de cada manzana se obtiene una muestra aleatoria de viviendas. Al interior de cada vivienda se selecciona un elector según la técnica del “cumpleaños”. No se realiza actualización del número de viviendas de la manzana seleccionada. 
+En este caso se realizará un muestreo de conglomerados en dos etapas, estratificadas por zona (considera solo viviendas urbanas – censo 2017). Primeramente, se obtiene una muestra aleatoria simple de manzanas al interior de cada estrato y de cada manzana se obtiene una muestra aleatoria de viviendas. Al interior de cada vivienda se selecciona un elector según la técnica del “cumpleaños”. No se realiza actualización del número de viviendas de la manzana seleccionada, de aquí son seleccionadas `r nrow(datos)` personas de un total de `r Pobla_Chile`.
+
+## Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-Edad de acuerdo al diseño Muestral
+
+
 
 a) Obtenga las respectivas probabilidades de selección y los factores de expansión según Zona, sexo y cat.Edad de acuerdo con el diseño muestral. Contraste los resultados obtenidos con la información censal proyectada al año 2021. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) ponderado y sin ponderar – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo). **(1.0 punto)**
+
 
 b) Para la base ponderada, obtenga los g-weigths (%pob / %muestral) según zona y sexo–cat.edad. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo).**(1.0 punto)**
 

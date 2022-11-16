@@ -30,6 +30,8 @@ datos <- datos %>%
 
 # Cruce Primera vuelta v/s Segunda Vuelta
 
+cro_cpct(datos$P2v, datos$P1v)
+
 sort(table(datos$P1v))
 sort(table(datos$P2v))
 cruce_1v_2v <- table(datos$P1v,datos$P2v)
@@ -185,3 +187,7 @@ datos_d <- datos %>%
   mutate(pond = raking_d$weightvec)
 
 cro_cpct(datos_d$P2v,list(datos_d$P1v ,total()), weight=datos_d$pond)
+
+# e) -----
+
+
