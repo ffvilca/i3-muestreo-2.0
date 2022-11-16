@@ -1,3 +1,6 @@
+library(tidyverse)
+library(survey)
+
 base <- rio::import("1.datos/7_1_vivienda.xls", sheet = "Región")
 colnames(base) <- base[1,]
 
@@ -59,7 +62,11 @@ select.vivienda <- list(z1 = viviendas.manzana[[1]]/viviendas.muestrales.z[[1]],
                         z3 = viviendas.manzana[[3]]/viviendas.muestrales.z[[3]],
                         z4 = viviendas.manzana[[4]]/viviendas.muestrales.z[[4]])
 
-pesos1 <- select.manzana[[1]]^(-1)/select.vivienda[[1]]
-pesos2 <- select.manzana[[2]]^(-1)/select.vivienda[[2]]
-pesos3 <- select.manzana[[3]]^(-1)/select.vivienda[[3]]
-pesos4 <- select.manzana[[4]]^(-1)/select.vivienda[[4]]
+# survey ------------------------------------------------------------------
+
+fexp1 <- select.manzana[[1]]^(-1)/select.vivienda[[1]]
+fexp2 <- select.manzana[[2]]^(-1)/select.vivienda[[2]]
+fexp3 <- select.manzana[[3]]^(-1)/select.vivienda[[3]]
+fexp4 <- select.manzana[[4]]^(-1)/select.vivienda[[4]]
+
+
