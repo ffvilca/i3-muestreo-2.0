@@ -24,6 +24,25 @@ crossref:
   tbl-prefix: Tabla
 tbl-cap-location: bottom
 ---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(survey)
+library(tidyverse)
+library(anesrake)
+library(expss)
+library(kableExtra)
+library(beepr)
+library(here)
+
+```
+
+```{r cache=TRUE, include=FALSE}
+source(here("2.resultados/script-i3_muestreo.R"), local = knitr::knit_global())
+```
+
+
 # Análisis de la elección presidencial del año 2021
 
 En el siguiente informe, se darán a conocer algunos resultados interesantes, con respecto a las elecciones presidenciales del año 2021, se analizará al votante de 1ra Vuelta con respecto a sus características como el Sexo, Edad y GSE, además se intentarán proyectar los resultados de 2da Vuelta, para ellos se usarán diferentes técnicas de muestreo y de balanceo para que los resultados sean lo más verosimiles a la realidad.
@@ -34,6 +53,18 @@ En este caso se realizará un muestreo de conglomerados en dos etapas, estratifi
 
 ## Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-Edad de acuerdo al diseño Muestral
 
+Por un lado si se usa la información del censo realizado el 2017, es posible obtener la información de las manzanas y las viviendas totales para calcular las probabilidades de selección, por otro lado, si se usan las estimaciones y proyecciones de la población que se tienen para el 2021, es posible conocer la cantidad de personas por sexo y edad que habrá en Chile y usando la tabla 1 de las referencias, se puede conocer los GSE que existen al 2021.
+
+Con toda esta información se tiene que las probabilidades de selección y factores de Expansión serán:
+
+```{r echo=FALSE,fig.align='center',fig.cap="Tabla 1: Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-edad"}
+
+tabla_datos1 <- cbind(muestra[,1:3],prob,fexp)
+
+colnames(tabla_datos1) <- c("zona","sexo","cat.edad","Prob de Selección","Factores de Expansión")
+
+knitr::kable(tabla_datos1, digits = 6)
+```
 
 
 a) Obtenga las respectivas probabilidades de selección y los factores de expansión según Zona, sexo y cat.Edad de acuerdo con el diseño muestral. Contraste los resultados obtenidos con la información censal proyectada al año 2021. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) ponderado y sin ponderar – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo). **(1.0 punto)**

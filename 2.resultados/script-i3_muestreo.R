@@ -2,10 +2,11 @@ library(survey)
 library(tidyverse)
 library(anesrake)
 library(expss)
+library(here)
 
-datos <- rio::import("1.datos/Encuesta.xlsx")
-censo_p <- rio::import("1.datos/estimaciones-y-proyecciones-2002-2035-comunas.xlsx")
-base <- rio::import("1.datos/7_1_vivienda.xls", sheet = "Región")
+datos <- rio::import(here("1.datos/Encuesta.xlsx"))
+censo_p <- rio::import(here("1.datos/estimaciones-y-proyecciones-2002-2035-comunas.xlsx"))
+base <- rio::import(here("1.datos/7_1_vivienda.xls"), sheet = "Región")
 colnames(base) <- base[1,]
 
 norte <- c(1,2,3,4,15)
