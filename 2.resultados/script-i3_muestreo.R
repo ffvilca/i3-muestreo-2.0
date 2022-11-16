@@ -13,16 +13,8 @@ centro <- c(6,7,8,9,16)
 sur <- c(9,14,10,11,12)
 rm <- 13
 
-<<<<<<< HEAD
-cro_cpct(datos$P2v, datos$P1v)
-
-sort(table(datos$P1v))
-sort(table(datos$P2v))
-cruce_1v_2v <- table(datos$P1v,datos$P2v)
-round(prop.table(cruce_1v_2v,1)*100,3)
-=======
 # a) --------------------------------------------------------------
->>>>>>> c4bbbe897b9a295f31fbb1a4fdcb186e4379de5c
+
 
 base1 <- base %>% 
   filter(ÁREA == "Urbano") %>% 
@@ -146,6 +138,8 @@ fexpc4 <- 1/select.edad[[4]]
 
 ## Cruce votos sin ponderar ----
 
+cro_cpct(datos$P2v, datos$P1v)
+
 sort(table(datos$P1v))
 sort(table(datos$P2v))
 cruce_1v_2v <- table(datos$P1v,datos$P2v)
@@ -154,9 +148,27 @@ round(prop.table(cruce_1v_2v,1)*100,3)
 ## Cruce votos ponderados ----
 
 muestra.p <- muestra %>% 
-  mutate(w = fexp, ponderado = fexp*n)
+  mutate(w = fexp) %>% 
+  select(-n)
 
+datos <- datos %>% mutate(pesos = NA)
+for(i in 1:32){
+  datos$pesos[which(datos$zona == muestra.p$zona[i] & 
+                    datos$sexo == muestra.p$sexo[i] &
+                    datos$cat.edad == muestra.p$cat.edad[i])] <- muestra.p$w[i]
+}
 
+votos1 <- datos %>% 
+  select(pesos, P1v) %>% 
+  group_by(P1v) %>% 
+  summarise(P1v.p = sum(pesos))
+
+votos2 <- datos %>% 
+  select(pesos, P2v) %>% 
+  group_by(P2v) %>% 
+  summarise(P2v.p = sum(pesos))
+
+cro_cpct(datos$P2v.p, datos$P1v.p)
 
 # b) --------------------------------------------------------------
 
