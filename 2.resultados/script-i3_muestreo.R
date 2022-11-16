@@ -3,6 +3,7 @@ datos <- rio::import("1.datos/Encuesta.xlsx")
 library(survey)
 library(tidyverse)
 library(anesrake)
+library(expss)
 
 # a) --------------------------------------------------------------
 
@@ -34,6 +35,7 @@ sort(table(datos$P2v))
 cruce_1v_2v <- table(datos$P1v,datos$P2v)
 round(prop.table(cruce_1v_2v,1)*100,3)
 
+# c) -----
 
 censo_p <- rio::import("1.datos/estimaciones-y-proyecciones-2002-2035-comunas.xlsx")
 View(censo_p)
@@ -79,7 +81,7 @@ cat.edad_pob <- censo_limpio %>%
 
 gse_pob <- c(8.6, 18.8 ,26.3 ,46.3 )/100
 
-target_d <- list(
+target_c <- list(
   sexo = c(
     "1" = sexo_pob$Prob_grupo[1], 
     "2"  = sexo_pob$Prob_grupo[2]
@@ -99,15 +101,69 @@ target_d <- list(
   gse = gse_pob
 )
 
-anesrake(
-  target_d, 
+anesrakefinder(target_c, datos, choosemethod = "total") 
+
+
+raking_c <- anesrake(
+  target_c, 
   data.frame(datos), 
   caseid = datos$num, 
-  verbose= TRUE, 
+  verbose= FALSE, 
   cap = 5,
   choosemethod = "total",
-  type = "pctlim", 
+  type = "pctlim",nlim = 5,
   pctlim = .05 , 
   iterate = TRUE,
   force1 = TRUE
 )
+
+summary(raking_c)
+
+Pobla_Chile <- sum(censo_limpio$Poblacion_2021)
+
+datos_c <- datos %>% 
+  mutate(pond = raking_c$weightvec)
+
+cro_cpct(datos_c$P2v,list(datos_c$P1v ,total()), weight=datos_c$pond)
+
+# d) ----
+
+
+# por tablita de enunciadito
+
+voto_pob <- c(53.0, 12.1, 13.1, 21.8)/100
+
+target_d <- list(
+  sexo = c(
+    "1" = sexo_pob$Prob_grupo[1], 
+    "2"  = sexo_pob$Prob_grupo[2]
+  ),
+  cat.edad = c(
+    "1" = cat.edad_pob$Prob_grupo[1], 
+    "2" = cat.edad_pob$Prob_grupo[2], 
+    "3" = cat.edad_pob$Prob_grupo[3], 
+    "4" = cat.edad_pob$Prob_grupo[4]
+  ),
+  zona = c(
+    "1" = zona_pob$Prob_grupo[1],
+    "2" = zona_pob$Prob_grupo[2],
+    "3" = zona_pob$Prob_grupo[3],
+    "4" = zona_pob$Prob_grupo[4]
+  ),
+  votos = voto_pob
+)
+
+raking_d <- anesrake(
+  target_d, 
+  data.frame(datos), 
+  caseid = datos$num, 
+  verbose= FALSE, 
+  cap = 5,
+  choosemethod = "total",
+  type = "pctlim",nlim = 5,
+  pctlim = .05 , 
+  iterate = TRUE,
+  force1 = TRUE
+)
+
+summary(raking_e)
