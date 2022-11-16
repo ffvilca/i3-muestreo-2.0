@@ -287,6 +287,34 @@ datos_d <- datos %>%
 
 cro_cpct(datos_d$P2v,list(datos_d$P1v ,total()), weight=datos_d$pond)
 
-# e) -----
 
+# e) ----------------------------------------------------------------------
 
+pob.chile <- 15200840
+
+## ponderador a) ----
+
+tabla <- datos %>% 
+  mutate(fexp = pesos/sum(pesos)*pob.chile)
+
+cro_cpct(tabla$P2v, tabla$P1v, weight = tabla$fexp)
+
+## ponderador b) ----
+tablab <- datos %>% 
+  mutate(fexp = g/sum(g)*pob.chile)
+
+cro_cpct(tablab$P2v, tablab$P1v, weight = tablab$fexp)
+
+## ponderador c) ----
+
+tablac <- datos_c %>% 
+  mutate(fexp = pond/sum(pond)*pob.chile)
+
+cro_cpct(tablac$P2v, tablac$P1v, weight = tablac$fexp)
+
+## ponderador d) ----
+
+tablad <- datos_d %>% 
+  mutate(fexp =  pond/sum(pond)*pob.chile)
+
+cro_cpct(tablad$P2v, tablad$P1v, weight = tablad$fexp)
