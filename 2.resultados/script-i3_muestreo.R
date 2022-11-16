@@ -3,6 +3,7 @@ library(tidyverse)
 library(anesrake)
 library(expss)
 library(here)
+library(sampling)
 
 datos <- rio::import(here("1.datos/Encuesta.xlsx"))
 censo_p <- rio::import(here("1.datos/estimaciones-y-proyecciones-2002-2035-comunas.xlsx"))
@@ -141,10 +142,6 @@ fexpc4 <- 1/select.edad[[4]]
 
 cro_cpct(datos$P2v, datos$P1v)
 
-sort(table(datos$P1v))
-sort(table(datos$P2v))
-cruce_1v_2v <- table(datos$P1v,datos$P2v)
-round(prop.table(cruce_1v_2v,1)*100,3)
 
 ## Cruce votos ponderados ----
 
@@ -163,12 +160,19 @@ cro_cpct(datos$P2v, datos$P1v, weight = datos$pesos)
 
 # b) --------------------------------------------------------------
 
+real <- poblacion$Pob_grupo/sum(poblacion$Pob_grupo)
+observado.p <- muestra.p$w/sum(muestra.p$w)
 
+pesos.n <- real/observado.p
 
-# Cruce Primera vuelta v/s Segunda Vuelta
+datos <- datos %>% mutate(g = NA)
+for(i in 1:32){
+  datos$g[which(datos$zona == muestra.p$zona[i] & 
+                      datos$sexo == muestra.p$sexo[i] &
+                      datos$cat.edad == muestra.p$cat.edad[i])] <- pesos.n[i]
+}
 
-
-
+cro_cpct(datos$P2v, datos$P1v, weight = datos$g)
 
 # c) ----------------------------------------------------------------------
 
