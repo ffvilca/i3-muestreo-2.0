@@ -131,7 +131,20 @@ cro_cpct(datos_c$P2v,list(datos_c$P1v ,total()), weight=datos_c$pond)
 
 # por tablita de enunciadito
 
-voto_pob <- c(53.0, 12.1, 13.1, 21.8)/100
+voto_pob <- c("1" = 53.0, "2" = 12.1,"3"= 13.1,"4" = 21.8)/100
+
+voto_muestra <- datos %>% 
+  mutate("voto_P1V" = ifelse(P1v == 1,"2",
+                             ifelse(P1v == 2, "3",
+                                    ifelse(P1v == 8,"1","4")))) %>% 
+  group_by(voto_P1V) %>% 
+  count() %>% 
+  mutate("prob_P1v" = n/1007)
+
+datos_d <- datos %>% 
+  mutate("votos" = ifelse(P1v == 1,"2",
+                             ifelse(P1v == 2, "3",
+                                    ifelse(P1v == 8,"1","4"))))
 
 target_d <- list(
   sexo = c(
@@ -155,7 +168,7 @@ target_d <- list(
 
 raking_d <- anesrake(
   target_d, 
-  data.frame(datos), 
+  data.frame(datos_d), 
   caseid = datos$num, 
   verbose= FALSE, 
   cap = 5,
@@ -166,4 +179,9 @@ raking_d <- anesrake(
   force1 = TRUE
 )
 
-summary(raking_e)
+summary(raking_d)
+
+datos_d <- datos %>% 
+  mutate(pond = raking_d$weightvec)
+
+cro_cpct(datos_d$P2v,list(datos_d$P1v ,total()), weight=datos_d$pond)
