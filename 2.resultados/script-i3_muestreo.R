@@ -158,17 +158,7 @@ for(i in 1:32){
                     datos$cat.edad == muestra.p$cat.edad[i])] <- muestra.p$w[i]
 }
 
-votos1 <- datos %>% 
-  select(pesos, P1v) %>% 
-  group_by(P1v) %>% 
-  summarise(P1v.p = sum(pesos))
-
-votos2 <- datos %>% 
-  select(pesos, P2v) %>% 
-  group_by(P2v) %>% 
-  summarise(P2v.p = sum(pesos))
-
-cro_cpct(datos$P2v.p, datos$P1v.p)
+cro_cpct(datos$P2v, datos$P1v, weight = datos$pesos)
 
 # b) --------------------------------------------------------------
 
