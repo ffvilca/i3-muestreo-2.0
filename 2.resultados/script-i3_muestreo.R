@@ -1,46 +1,37 @@
-
-datos <- rio::import("1.datos/Encuesta.xlsx")
 library(survey)
 library(tidyverse)
 library(anesrake)
 library(expss)
 
-# a) --------------------------------------------------------------
+datos <- rio::import("1.datos/Encuesta.xlsx")
+censo_p <- rio::import("1.datos/estimaciones-y-proyecciones-2002-2035-comunas.xlsx")
+base <- rio::import("1.datos/7_1_vivienda.xls", sheet = "Región")
+colnames(base) <- base[1,]
 
-#Primero se eligen las manzanas
-#Segundo se elige la vivienda
-#Al final se elige la persona
+norte <- c(1,2,3,4,15)
+centro <- c(6,7,8,9,16)
+sur <- c(9,14,10,11,12)
+rm <- 13
 
-datos$zona <- as.factor(datos$zona)
-
-aux <- matrix(table(datos$zona, datos$IdMz), nrow = 4)
-
-manzanas.zona <- rowSums(ifelse(aux!=0, 1, 0))
-
-## Probabilidades de selección de la vivienda
-
-datos <- datos %>% 
-  mutate(mxzona = manzanas.zona[zona]) %>% 
-  mutate(p.sel1 =  (1/mxzona) * (1/Nviv), #para la etapa 1 (vivienda)
-         p.sel2 = (1/Nelig)) #para la etapa 2 (persona)
-
-# b) --------------------------------------------------------------
-
-
-
-# Cruce Primera vuelta v/s Segunda Vuelta
-
+<<<<<<< HEAD
 cro_cpct(datos$P2v, datos$P1v)
 
 sort(table(datos$P1v))
 sort(table(datos$P2v))
 cruce_1v_2v <- table(datos$P1v,datos$P2v)
 round(prop.table(cruce_1v_2v,1)*100,3)
+=======
+# a) --------------------------------------------------------------
+>>>>>>> c4bbbe897b9a295f31fbb1a4fdcb186e4379de5c
 
-# c) -----
+base1 <- base %>% 
+  filter(ÁREA == "Urbano") %>% 
+  select(ORDEN:ÁREA, `VIVIENDAS PARTICULARES OCUPADAS CON MORADORES PRESENTES`) %>% 
+  mutate(zona = ifelse(`CÓDIGO REGIÓN` == rm, 4, 
+                       ifelse(`CÓDIGO REGIÓN` %in% norte, 1,
+                              ifelse(`CÓDIGO REGIÓN` %in% centro, 2, 3))))
 
-censo_p <- rio::import("1.datos/estimaciones-y-proyecciones-2002-2035-comunas.xlsx")
-View(censo_p)
+base1 <- base1[-1,]
 
 censo_limpio <- censo_p %>% 
   select(Zona,`Sexo\r\n1=Hombre\r\n2=Mujer`,Edad,`Poblacion 2021`) %>% 
@@ -60,7 +51,7 @@ pesos_muestra <- datos %>%
   select(zona, sexo, cat.edad) %>% 
   group_by(zona, sexo, cat.edad) %>%
   count()
-  
+
 sexo_pob <- censo_limpio %>% 
   select(Sexo, Poblacion_2021) %>% 
   group_by(Sexo) %>% 
@@ -78,6 +69,106 @@ cat.edad_pob <- censo_limpio %>%
   group_by(cat.edad) %>% 
   summarise(Pob_grupo = sum(Poblacion_2021)) %>% 
   mutate(Prob_grupo = Pob_grupo/sum(Pob_grupo))
+
+
+## Factores de expansión y probabilidades conjuntas ----
+
+poblacion <- censo_limpio %>% 
+  select(Zona, Sexo, cat.edad, Poblacion_2021) %>% 
+  group_by(Zona, Sexo, cat.edad) %>% 
+  summarise(Pob_grupo = sum(Poblacion_2021))
+
+muestra <- datos %>% 
+  select(zona, sexo, cat.edad) %>% 
+  count(zona, sexo, cat.edad)
+
+prob <- muestra$n/poblacion$Pob_grupo #probabilidad de que sea de la zona, sea de algún sexo y pertenezca a cierta categoría de edad
+
+fexp <- 1/prob #factores de expansión
+
+w <- sum(fexp)
+
+## Factores de expansión y probabilidades marginales ----
+
+### Por zona ----
+
+viviendas.zona <- list(z1 = sum(as.numeric(base1[which(base1$zona == 1),5])),
+                       z2 = sum(as.numeric(base1[which(base1$zona == 2),5])),
+                       z3 = sum(as.numeric(base1[which(base1$zona == 3),5])),
+                       z4 = sum(as.numeric(base1[which(base1$zona == 4),5])))
+
+viviendas.muestrales.z <- list(z1 = sum(distinct(datos[which(datos$zona==1),], 
+                                                 IdMz, .keep_all = TRUE)$Nviv),
+                               z2 = sum(distinct(datos[which(datos$zona==2),], 
+                                                 IdMz, .keep_all = TRUE)$Nviv),
+                               z3 = sum(distinct(datos[which(datos$zona==3),], 
+                                                 IdMz, .keep_all = TRUE)$Nviv),
+                               z4 = sum(distinct(datos[which(datos$zona==4),], 
+                                                 IdMz, .keep_all = TRUE)$Nviv))
+
+select.zona <- list(z1 = viviendas.muestrales.z[[1]]/viviendas.zona[[1]],
+                    z2 = viviendas.muestrales.z[[2]]/viviendas.zona[[2]],
+                    z3 = viviendas.muestrales.z[[3]]/viviendas.zona[[3]],
+                    z4 = viviendas.muestrales.z[[4]]/viviendas.zona[[4]])
+
+fexp1 <- 1/select.zona[[1]]
+fexp2 <- 1/select.zona[[2]]
+fexp3 <- 1/select.zona[[3]]
+fexp4 <- 1/select.zona[[4]]
+
+### Por sexo ----
+
+persona.mu <- list(hombre = count(datos[which(datos$sexo == 1),], sexo)[,2],
+                   mujer = count(datos[which(datos$sexo == 2),], sexo)[,2])
+
+select.persona <- list(hombre = persona.mu[[1]]/sexo_pob[1,2],
+                       mujer = persona.mu[[2]]/sexo_pob[2,2])
+
+fexph <- select.persona[[1]]^(-1)
+fexpm <- select.persona[[2]]^(-1)
+
+### por categoría de edad ----
+
+cat.edadmuestral <- list(c1 = count(datos[which(datos$cat.edad == 1),], cat.edad)[,2],
+                         c2 = count(datos[which(datos$cat.edad == 2),], cat.edad)[,2],
+                         c3 = count(datos[which(datos$cat.edad == 3),], cat.edad)[,2],
+                         c4 = count(datos[which(datos$cat.edad == 4),], cat.edad)[,2])
+
+select.edad <- list(c1 = cat.edadmuestral[[1]]/cat.edad_pob[1,2],
+                    c2 = cat.edadmuestral[[2]]/cat.edad_pob[2,2],
+                    c3 = cat.edadmuestral[[3]]/cat.edad_pob[3,2],
+                    c4 = cat.edadmuestral[[4]]/cat.edad_pob[4,2])
+
+fexpc1 <- 1/select.edad[[1]]
+fexpc2 <- 1/select.edad[[2]]
+fexpc3 <- 1/select.edad[[3]]
+fexpc4 <- 1/select.edad[[4]]
+
+## Cruce votos sin ponderar ----
+
+sort(table(datos$P1v))
+sort(table(datos$P2v))
+cruce_1v_2v <- table(datos$P1v,datos$P2v)
+round(prop.table(cruce_1v_2v,1)*100,3)
+
+## Cruce votos ponderados ----
+
+muestra.p <- muestra %>% 
+  mutate(w = fexp, ponderado = fexp*n)
+
+
+
+# b) --------------------------------------------------------------
+
+
+
+# Cruce Primera vuelta v/s Segunda Vuelta
+
+
+
+
+# c) ----------------------------------------------------------------------
+
 
 # por tablita de enunciadito
 
@@ -128,7 +219,8 @@ datos_c <- datos %>%
 
 cro_cpct(datos_c$P2v,list(datos_c$P1v ,total()), weight=datos_c$pond)
 
-# d) ----
+
+# d) ----------------------------------------------------------------------
 
 
 # por tablita de enunciadito
