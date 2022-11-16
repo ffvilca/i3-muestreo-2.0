@@ -62,12 +62,24 @@ select.vivienda <- list(z1 = viviendas.manzana[[1]]/viviendas.muestrales.z[[1]],
                         z3 = viviendas.manzana[[3]]/viviendas.muestrales.z[[3]],
                         z4 = viviendas.manzana[[4]]/viviendas.muestrales.z[[4]])
 
-# Factores según zona ------------------------------------------------------------------
+select.zona <- list(z1 = viviendas.muestrales.z[[1]]/viviendas.zona[[1]],
+                    z2 = viviendas.muestrales.z[[2]]/viviendas.zona[[2]],
+                    z3 = viviendas.muestrales.z[[3]]/viviendas.zona[[3]],
+                    z4 = viviendas.muestrales.z[[4]]/viviendas.zona[[4]])
 
-fexp1 <- select.manzana[[1]]^(-1)/select.vivienda[[1]]
-fexp2 <- select.manzana[[2]]^(-1)/select.vivienda[[2]]
-fexp3 <- select.manzana[[3]]^(-1)/select.vivienda[[3]]
-fexp4 <- select.manzana[[4]]^(-1)/select.vivienda[[4]]
+# Factores según zona -----------------------------------------------------
+
+fexp1 <- 1/select.zona[[1]]
+fexp2 <- 1/select.zona[[2]]
+fexp3 <- 1/select.zona[[3]]
+fexp4 <- 1/select.zona[[4]]
+
+# Factores según zona/manzana ---------------------------------------------
+
+fexp1m <- select.manzana[[1]]^(-1)/select.vivienda[[1]]
+fexp2m <- select.manzana[[2]]^(-1)/select.vivienda[[2]]
+fexp3m <- select.manzana[[3]]^(-1)/select.vivienda[[3]]
+fexp4m <- select.manzana[[4]]^(-1)/select.vivienda[[4]]
 
 
 # Cantidades totales si tiene tula o no -----------------------------------
@@ -120,3 +132,9 @@ fexpj <- 1/select.edad[[1]]
 fexpntj <- 1/select.edad[[2]]
 fexpntv <- 1/select.edad[[3]]
 fexpv <- 1/select.edad[[4]]
+
+
+
+# Probabilidades conjuntas ------------------------------------------------
+
+
