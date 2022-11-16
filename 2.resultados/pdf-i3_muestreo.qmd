@@ -26,7 +26,6 @@ tbl-cap-location: bottom
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 
 library(survey)
 library(tidyverse)
@@ -57,13 +56,14 @@ Por un lado si se usa la información del censo realizado el 2017, es posible ob
 
 Con toda esta información se tiene que las probabilidades de selección y factores de Expansión serán:
 
-```{r echo=FALSE,fig.align='center',fig.cap="Tabla 1: Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-edad"}
+```{r echo = FALSE}
+#|tbl-cap: Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-edad
 
 tabla_datos1 <- cbind(muestra[,1:3],prob,fexp)
 
 colnames(tabla_datos1) <- c("zona","sexo","cat.edad","Prob de Selección","Factores de Expansión")
 
-knitr::kable(tabla_datos1, digits = 6)
+knitr::kable(tabla_datos1, digits = 6, align = "c")
 ```
 
 
