@@ -33,7 +33,7 @@ library(anesrake)
 library(expss)
 library(beepr)
 library(here)
-
+library(kableExtra)
 ```
 
 ```{r cache=TRUE, include=FALSE}
@@ -62,7 +62,8 @@ tabla_datos1 <- cbind(muestra[,1:3],prob,fexp)
 
 colnames(tabla_datos1) <- c("zona","sexo","cat.edad","Prob de Selección","Factores de Expansión")
 
-knitr::kable(tabla_datos1, digits = 6, align = "c")
+knitr::kable(tabla_datos1, digits = 6, align = "c", format="latex") %>% 
+  kable_styling( position="center")
 ```
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra sin ponderar
@@ -70,7 +71,7 @@ knitr::kable(tabla_datos1, digits = 6, align = "c")
 Para este caso, en general solo es de interés ver la redistribución de los votos tal y como es lo expresado por los ciudadanos de la muestra, los resultados pueden ser apreciados en la Tabla 2:
 
 ```{r echo = FALSE}
-#|tbl-cap: Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-edad
+#|tbl-cap: Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra sin ponderar
 
 tabla_datos2 <- cro_cpct(datos$P2v, datos$P1v)
 
@@ -78,47 +79,182 @@ tabla_datos2[is.na(tabla_datos2)] = 0
 
 tabla_datos2 <- tabla_datos2[,2:11]
 
-colnames(tabla_datos2) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+colnames(tabla_datos2) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco /Nulo","No sabe")
 row.names(tabla_datos2) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
 
-knitr::kable(tabla_datos2, digits = 3, align = "c")
+knitr::kable(tabla_datos2, digits = 3, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center")
 ```
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con ponderación
 
 En la misma línea del item anterior, ahora se hará el cruce de votos pero haciendo una ponderación según la zona en la que habita la persona, y es homnre o mujer y en qué categoría se encuentra según su edad. Para poder lograr esto, debemos calcular las probabilidades de selección para cada uno de estos casos, y así podremos obtener los factores de expansión $w_{ij}$, cuyo procedimiento y detalle podemos encontrar en el script. Así, la distribución de los votos es la siguiente:
 
-```{r, echo =FALSE}
-tabla_datos3 <- cro_cpct(datos$P2v, datos$P1v, weight = datos$pesos)
+```{r echo =FALSE}
+#|tbl-cap: Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con ponderación
 
-tabla_datos3 <- tabla_datos3[,2:11]
+tabla_datos3 <- cro_cpct(datos$P2v, datos$P1v, weight = datos$pesos)
 
 tabla_datos3[is.na(tabla_datos3)] = 0
 
+tabla_datos3 <- tabla_datos3[,2:11]
 
 colnames(tabla_datos3) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
 row.names(tabla_datos3) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
 
-knitr::kable(tabla_datos3, digits = 3, align = "c" )
+knitr::kable(as.matrix(tabla_datos3), digits = 3, align = "c" , format="latex") %>% 
+  kable_styling(full_width=T, position="center")
+```
+
+Con los cruces de votos de ambas tablas es posible observar algunas tendencias, en general no mayor cambio por los votantes que en primera instancia fueron por Boric o por Kast, si es importante notar que la mayoría de los ciudadanos que originalmente votaron por Provoste, Ártes o MEO, fueron van a ir para Boric en 2da vuelta, lo cual tiene mucho sentido por los discursos póliticos de los personajes. Sin embargo, el personaje importante en este caso es Parisi, ya que al ser el 3re candidato con más voto puede complicar la situación de quien puede salir electo. Según la muestra, con ponderación o sin ella prácticamente el 50% de los votos que recibió Parisi van a ir para el candidato Boric. Todo este análisis podría verse opacado por la gran masa de quienes no votaron en general se distribuye equitativamente entre los 2 candidatos o no saber por quien votar.
+
+## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con g-weights
+
+```{r echo = FALSE}
+#|tbl-cap: Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con g-weights
+tabla_datos4 <- cro_cpct(datos$P2v, datos$P1v, weight = datos$g)
+
+tabla_datos4[is.na(tabla_datos4)] = 0
+
+tabla_datos4 <- tabla_datos4[,2:11]
+
+colnames(tabla_datos4) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos4) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+
+knitr::kable(tabla_datos4, digits = 3, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center")
+```
+
+igual que en el caso anterior los votos de parisi se van en su mayoría para Boric, mencionar que las tendencias no varían mucho
+
+## Cruce de votos 2da Vuelta vs 1ra Vuelta usando raking según Zona, Sexo, cat.edad y GSE
+
+```{r, echo =FALSE}
+#|tbl-cap: Cruce de votos 2da Vuelta vs 1ra Vuelta usando raking según Zona, Sexo, cat.edad y GSE
+tabla_datos5 <- cro_cpct(datos_c$P2v,list(datos_c$P1v ,total()), weight=datos_c$pond)
+
+tabla_datos5 <- tabla_datos5[,2:11]
+
+tabla_datos5[is.na(tabla_datos5)] = 0
+
+colnames(tabla_datos5) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos5) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+
+knitr::kable(tabla_datos5, digits = 3, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center")
+```
+
+## Cruce de votos 2da Vuelta vs 1ra Vuelta usando raking según Zona, Sexo, cat.edad y voto en 1ra vuelta
+
+```{r echo =FALSE}
+
+tabla_datos6 <- cro_cpct(datos_d$P2v,list(datos_d$P1v ,total()), weight=datos_d$pond)
+
+tabla_datos6 <- tabla_datos6[,2:11]
+
+tabla_datos6[is.na(tabla_datos6)] = 0
+
+colnames(tabla_datos6) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos6) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+
+knitr::kable(tabla_datos6, digits = 3, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center") 
+```
+
+## Predicciones para el Total Poblacional
+
+Justificar porque es bueno y que se perdería al hacer esto
+
+Ver como se lean las tablas weonas y se vea bonito 
+
+### Ponderador de a)
+```{r echo =FALSE}
+pob.chile <- 15200840
+
+tabla <- datos %>% 
+  mutate(fexp = pesos/sum(pesos)*pob.chile)
+
+
+tabla_datos7 <- cro(tabla$P2v, tabla$P1v, weight = tabla$fexp)
+
+tabla_datos7 <- tabla_datos7[1:5,2:11]
+
+tabla_datos7[is.na(tabla_datos7)] = 0
+
+tabla_datos7 <- rbind(tabla_datos7 ,colSums(tabla_datos7))
+
+colnames(tabla_datos7) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos7) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+
+knitr::kable(tabla_datos7, digits = 0, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center") 
 ```
 
 
+### Ponderador de b)
 
-## Cruce de votos con g-weights
+```{r echo =FALSE, eval=FALSE}
+tablab <- datos %>% 
+  mutate(fexp = g/sum(g)*pob.chile)
+
+tabla_datos8 <- cro(tablab$P2v, tablab$P1v, weight = tablab$fexp)
+
+tabla_datos8 <- tabla_datos8[1:5,2:11]
+
+tabla_datos8[is.na(tabla_datos8)] = 0
+
+tabla_datos8 <- rbind(tabla_datos8 ,colSums(tabla_datos8)
+
+colnames(tabla_datos8) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos8) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+
+knitr::kable(tabla_datos8, digits = 0, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center") 
+```
 
 
+### Ponderador de c)
 
-a) Obtenga las respectivas probabilidades de selección y los factores de expansión según Zona, sexo y cat.Edad de acuerdo con el diseño muestral. Contraste los resultados obtenidos con la información censal proyectada al año 2021. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) ponderado y sin ponderar – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo). **(1.0 punto)**
+```{r echo =FALSE}
+tablac <- datos_c %>% 
+  mutate(fexp = pond/sum(pond)*pob.chile)
 
+tabla_datos9 <- cro(tablac$P2v, tablac$P1v, weight = tablac$fexp)
 
-b) Para la base ponderada, obtenga los g-weigths (%pob / %muestral) según zona y sexo–cat.edad. Para esta base, muestre el cruce voto 2da vuelta (`P2v`) vs 1era vuelta (`P1v`) – en términos de porcentaje tal que permita leer la re-distribución de los votos. Comente los aspectos más llamativos, por ej. ¿Dónde van los votos de Parisi? (un párrafo).**(1.0 punto)**
+tabla_datos9 <- tabla_datos9[1:5,2:11]
 
-c) Para la base sin ponderar, usando la distribución GSE según zona, más la proyección censal realice un rastrillado (raking) según **zona – sexo – cat.edad – GSE** (total) que le permita 
-obtener una nueva ponderación. Reproduzca los cruces de b) y contraste con lo obtenido previamente y comente (un párrafo). **(1.0 punto)**
+tabla_datos9[is.na(tabla_datos9)] = 0
 
-d) Literalmente, hasta el momento se trabaja con el supuesto de cómo se comportarán los poco más de 15 millones de chilenos. Sin embargo, hubo una abstención importante y se pueden ver discrepancias entre los resultados de la elección en 1era vuelta y los valores obtenidos en la encuesta (P1v). Realice un rastrillado que considere estos resultados. Es decir, lleve a cabo un “raking” según **zona – sexo – cat.edad – Voto** (total ver tabla). Reproduzca los cruces de b) y contraste con lo obtenido previamente y comente (un párrafo). **(1.0 punto)**
+tabla_datos9 <- rbind(tabla_datos9 ,colSums(tabla_datos9))
 
-e) Considerando todos los resultados previos, realice predicciones para Total Poblacional (15.200.840), de tal manera que muestre el número de votos de cada candidato bajo cada ponderador (a, b, c y d). Comente (un párrafo). **(2.0 puntos)**
+colnames(tabla_datos9) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos9) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+
+knitr::kable(tabla_datos9, digits = 0, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center") 
+```
+
+### Ponderador de d)
+
+```{r echo =FALSE}
+tablad <- datos_d %>% 
+  mutate(fexp =  pond/sum(pond)*pob.chile)
+
+tabla_datos10 <- cro(tablad$P2v, tablad$P1v, weight = tablad$fexp)
+
+tabla_datos10 <- tabla_datos10[1:5,2:11]
+
+tabla_datos10[is.na(tabla_datos10)] = 0
+
+tabla_datos10 <- rbind(tabla_datos10 ,colSums(tabla_datos10))
+
+colnames(tabla_datos10) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+row.names(tabla_datos10) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe", "Total")
+
+knitr::kable(tabla_datos10, digits = 0, align = "c", format="latex") %>% 
+  kable_styling(full_width=T, position="center") 
+```
+
 
 ```{r include=FALSE}
 beep()
