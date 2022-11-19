@@ -153,6 +153,8 @@ knitr::kable(tabla_datos5, digits = 3, align = "c", format="latex") %>%
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta usando raking según Zona, Sexo, cat.edad y voto en 1ra vuelta
 
+Para este último caso, a diferencia del anterior, se le da importancia al ciudadano que no sabe por quien votar o que simplemente no vota, por lo que en la Tabla 6, al hacer el raking con estas nuevas variables, es posible notar, nuevamente que el cambio significativo no esta en los candidatos si no en los porcentajes de quienes no votaron, donde se ve que se mantiene la tendecia de que en porcentajes exista una alta cantidad que no vote ni en primera ni en segunda vuelta. Por lo que los candidatos, en general tienen que ser capaces de captar a ese ciudadano a través de sus propuestas para que poder declararse ganador de la elección presidencial. Esta tendencia en general no cambia la dinamica que se traía de los otros análisis solo le da mayor fuerza y validez a las ideas originales.
+
 ```{r echo =FALSE}
 
 
@@ -200,7 +202,7 @@ row.names(tabla_datos7) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Tot
 colnames(tabla_datos7) <- c("Cantidad de Votos", "Porcentaje")
 
 knitr::kable(tabla_datos7, align = "c", format="latex") %>% 
-  kable_styling(full_width=F, position="center", latex_options = "hold_position")
+  kable_styling(full_width=F, position="center", latex_options = "HOLD_position")
 ```
 
 
@@ -242,7 +244,7 @@ row.names(tabla_datos8) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Tot
 colnames(tabla_datos8) <- c("Cantidad de Votos", "Porcentaje")
 
 knitr::kable(tabla_datos8, align = "c", format="latex") %>% 
-  kable_styling(full_width=F, position="center", latex_options = "hold_position") 
+  kable_styling(full_width=F, position="center", latex_options = "HOLD_position") 
 ```
 
 
@@ -272,7 +274,7 @@ row.names(tabla_datos9) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Tot
 colnames(tabla_datos9) <- c("Cantidad de Votos", "Porcentaje")
 
 knitr::kable(tabla_datos9, align = "c", format="latex") %>% 
-  kable_styling(full_width=F, position="center", latex_options = "hold_position") 
+  kable_styling(full_width=F, position="center", latex_options = "HOLD_position") 
 ```
 
 ### Ponderador de d)
@@ -301,7 +303,7 @@ row.names(tabla_datos10) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","To
 colnames(tabla_datos10) <- c("Cantidad de Votos", "Porcentaje")
 
 knitr::kable(tabla_datos10, align = "c", format="latex") %>% 
-  kable_styling(full_width=F, position="center", latex_options = "hold_position") 
+  kable_styling(full_width=F, position="center", latex_options = "HOLD_position") 
 ```
 
 
