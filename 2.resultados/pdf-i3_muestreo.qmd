@@ -51,7 +51,7 @@ En este caso se realizará un muestreo de conglomerados en dos etapas, estratifi
 
 ## Probabilidades de Selección y Factores de Expansión según Zona, Sexo y cat-Edad de acuerdo al diseño Muestral
 
-Por un lado si se usa la información del censo realizado el 2017, es posible obtener la información de las manzanas y las viviendas totales para calcular las probabilidades de selección, por otro lado, si se usan las estimaciones y proyecciones de la población que se tienen para el 2021, es posible conocer la cantidad de personas por sexo y edad que habrá en Chile y usando la tabla 1 de las referencias, se puede conocer los GSE que existen al 2021.
+Por un lado si se usa la información del censo realizado el 2017, es posible obtener la información de las manzanas y las viviendas totales para calcular las probabilidades de selección. Por otro lado, si se usan las estimaciones y proyecciones de la población que se tienen para el 2021, es posible conocer la cantidad de personas por sexo y edad que habrá en Chile y usando la tabla 1 de las referencias, se puede conocer los GSE que existen al 2021.
 
 Con toda esta información se tiene que las probabilidades de selección y factores de Expansión serán:
 
@@ -68,7 +68,7 @@ knitr::kable(tabla_datos1, digits = 6, align = "c", format="latex") %>%
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra sin ponderar
 
-Para este caso, en general solo es de interés ver la redistribución de los votos tal y como es lo expresado por los ciudadanos de la muestra, los resultados pueden ser apreciados en la Tabla 2:
+Para este caso, sólo es de interés ver la redistribución de los votos tal y como es lo expresado por los ciudadanos de la muestra. Los resultados pueden ser apreciados en la Tabla 2:
 
 ```{r echo = FALSE}
 #|tbl-cap: Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra sin ponderar
@@ -88,7 +88,7 @@ knitr::kable(tabla_datos2, digits = 3, align = "c", format="latex") %>%
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con ponderación
 
-En la misma línea del item anterior, ahora se hará el cruce de votos pero haciendo una ponderación según la zona en la que habita la persona, y es homnre o mujer y en qué categoría se encuentra según su edad. Para poder lograr esto, debemos calcular las probabilidades de selección para cada uno de estos casos, y así podremos obtener los factores de expansión $w_{ij}$, cuyo procedimiento y detalle podemos encontrar en el script. Así, la distribución de los votos es la siguiente:
+En la misma línea del ítem anterior, ahora se hará el cruce de votos pero haciendo una ponderación según la zona en la que habita la persona, si es homnre o mujer y en qué categoría se encuentra según su edad. Para poder lograr esto, debemos calcular las probabilidades de selección para cada uno de estos casos, y así podremos obtener los factores de expansión $w_{ij}$, cuyo procedimiento y detalle podemos encontrar en el script. De esta manera, la distribución de los votos es la siguiente:
 
 ```{r echo =FALSE}
 #|tbl-cap: Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con ponderación
@@ -106,7 +106,9 @@ knitr::kable(as.matrix(tabla_datos3), digits = 3, align = "c" , format="latex") 
   kable_styling(full_width=T, position="center")
 ```
 
-Con los cruces de votos de ambas tablas es posible observar algunas tendencias, en general no mayor cambio por los votantes que en primera instancia fueron por Boric o por Kast, si es importante notar que la mayoría de los ciudadanos que originalmente votaron por Provoste, Ártes o MEO, fueron van a ir para Boric en 2da vuelta, lo cual tiene mucho sentido por los discursos póliticos de los personajes. Sin embargo, el personaje importante en este caso es Parisi, ya que al ser el 3re candidato con más voto puede complicar la situación de quien puede salir electo. Según la muestra, con ponderación o sin ella prácticamente el 50% de los votos que recibió Parisi van a ir para el candidato Boric. Todo este análisis podría verse opacado por la gran masa de quienes no votaron en general se distribuye equitativamente entre los 2 candidatos o no saber por quien votar.
+Con los cruces de votos de ambas tablas, es posible observar algunas tendencias. Por ejemplo, para las personas que votaron por Boric o por Kast se mantuvieron relativamente constantes en primera y segunda vuelta, mientras que las personas que se inclinaron por Provoste, Ártes o MEO en primera vuelta decidieron ir por Boric en la segunda instancia, lo cual tiene mucho sentido al ver los discursos políticos de estos candidatos.
+
+Sin embargo, uno de los personajes más destacados fue Parisi, ya que al ser el tercer candidato con más votos, la inclinación que tomen sus simpatizantes resultará clave para determinar a un ganador. Los resultados de nuestra muestra, con ponderación y sin ella, indican que prácticamente el 50% de los votantes de Parisi apoyarían a Boric, aunque este análisis podría verse opacado por la gran masa de quienes no votaron, cuya distribución es en general equitativa entre los dos candidatos.
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con g-weights
 
