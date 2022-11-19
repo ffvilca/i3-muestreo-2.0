@@ -310,7 +310,7 @@ knitr::kable(tabla_datos10, align = "c", format="latex") %>%
   kable_styling(full_width=F, position="center", latex_options = "HOLD_position") 
 ```
 
-Finalmente, para finalizar todo este análisis exhaustivo sobre las elecciones presidenciales, es posible concluir que para poder obtener buenos resultados y/o estimaciones en este caso para conocer quien podría ser el próximo presidente de la República de Chile, el muestreo juega un rol clave, ya que si no se es consciente de las características de la población o no se utilizan correctamente los supuestos, se obtienen malos resultados y por ello puedee que algún candidato se vea perjudicado, lo que afectaría al funcionamiento de la Democracia que según diversos historiadores, esta solo funcionará cuando todos tengan la misma información.
+Finalmente, para cerrar todo este análisis exhaustivo sobre las elecciones presidenciales, es posible concluir que para poder obtener buenos resultados y/o estimaciones que en este caso nos permitan conocer quién podría ser el próximo presidente de la República de Chile, el muestreo juega un rol clave, ya que si no se es consciente de las características de la población o no se utilizan correctamente los supuestos, se obtienen malos resultados y por ello puede que algún candidato se vea perjudicado, lo que afectaría al funcionamiento de la Democracia que, según diversos historiadores, sólo funcionará cuando todos tengan la misma información.
 
 ```{r include=FALSE}
 beep()
