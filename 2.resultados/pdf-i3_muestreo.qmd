@@ -111,6 +111,8 @@ Con los cruces de votos de ambas tablas, es posible observar algunas tendencias.
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta de la muestra con g-weights
 
+Una de las particularidades que tiene el método de g-weights, es que calcula los pesos de una manera que resulta proporcional entre la población muestreada y la población total. Luego de realizar este procedimiento para las categorías solicitadas, notemos que, de manera muy similar al caso anterior, la siguiente tabla nos muestra que la mitad de los votantes de Parisi votarían por Boric en la segunda vuelta. Por otro lado, resulta interesante recalcar que quienes no sabían por quién votar en la primera vuelta, en general tampoco saben para esta segunda vuelta. Algo similar ocurre con la gente que votó nulo o blanco, pues la mayoría de esas personas tampoco sabe por quién votar. Las tendencias antes mencionadas no presentan mayores cambios en este caso.
+
 ```{r echo = FALSE}
 
 
@@ -127,7 +129,6 @@ knitr::kable(tabla_datos4, digits = 3, align = "c", format="latex") %>%
   kable_styling(full_width=T, position="center")
 ```
 
-igual que en el caso anterior los votos de parisi se van en su mayoría para Boric, mencionar que las tendencias no varían mucho
 
 ## Cruce de votos 2da Vuelta vs 1ra Vuelta usando raking según Zona, Sexo, cat.edad y GSE
 
@@ -170,9 +171,7 @@ knitr::kable(tabla_datos6, digits = 3, align = "c", format="latex") %>%
 
 ## Predicciones para el Total Poblacional
 
-Justificar porque es bueno y que se perdería al hacer esto
-
-Ver como se lean las tablas weonas y se vea bonito 
+En genera, podemos ver que para todos los ponderadores el caso es similar: Boric sale elegido como nuevo presidente. Sin embargo, algunas de las diferencias que se pueden apreciar en cada uno de los casos se dan por la metodología utilizada. Por ejemplo, el panorama que se veía más estrecho en cuanto al resultado es el de la d), sobre todo porque toma en cuenta la abstención al momento de hacer el cálculo de los pesos y posteriores predicciones. En cambio, una situación contraria se puede observar en el caso del ponderador de b), donde la diferencia es notoria. Como en este caso se calculan los pesos en base a las proporciones muestrales versus las reales, sin considerar la abstención, muestra más o menos qué ocurriría si todas estas personas concurrieran a votar.
 
 ### Ponderador de a)
 ```{r echo =FALSE}
