@@ -173,7 +173,11 @@ knitr::kable(tabla_datos6, digits = 3, align = "c", format="latex") %>%
 
 ## Predicciones para el Total Poblacional
 
-En genera, podemos ver que para todos los ponderadores el caso es similar: Boric sale elegido como nuevo presidente. Sin embargo, algunas de las diferencias que se pueden apreciar en cada uno de los casos se dan por la metodología utilizada. Por ejemplo, el panorama que se veía más estrecho en cuanto al resultado es el de la d), sobre todo porque toma en cuenta la abstención al momento de hacer el cálculo de los pesos y posteriores predicciones. En cambio, una situación contraria se puede observar en el caso del ponderador de b), donde la diferencia es notoria. Como en este caso se calculan los pesos en base a las proporciones muestrales versus las reales, sin considerar la abstención, muestra más o menos qué ocurriría si todas estas personas concurrieran a votar.
+En general, podemos ver que para todos los ponderadores el caso es similar: 
+
+$$ \text{Boric sale elegido como nuevo presidente.}$$
+
+Sin embargo, algunas de las diferencias que se pueden apreciar en cada uno de los casos se dan por la metodología utilizada. Por ejemplo, el panorama que se veía más estrecho en cuanto al resultado es el de la d), sobre todo porque toma en cuenta la abstención al momento de hacer el cálculo de los pesos y posteriores predicciones. En cambio, una situación contraria se puede observar en el caso del ponderador de b), donde la diferencia es notoria. Como en este caso se calculan los pesos en base a las proporciones muestrales versus las reales, sin considerar la abstención, muestra más o menos qué ocurriría si todas estas personas concurrieran a votar.
 
 ### Ponderador de a)
 ```{r echo =FALSE}
@@ -306,6 +310,7 @@ knitr::kable(tabla_datos10, align = "c", format="latex") %>%
   kable_styling(full_width=F, position="center", latex_options = "HOLD_position") 
 ```
 
+Finalmente, para finalizar todo este análisis exhaustivo sobre las elecciones presidenciales, es posible concluir que para poder obtener buenos resultados y/o estimaciones en este caso para conocer quien podría ser el próximo presidente de la República de Chile, el muestreo juega un rol clave, ya que si no se es consciente de las características de la población o no se utilizan correctamente los supuestos, se obtienen malos resultados y por ello puedee que algún candidato se vea perjudicado, lo que afectaría al funcionamiento de la Democracia que según diversos historiadores, esta solo funcionará cuando todos tengan la misma información.
 
 ```{r include=FALSE}
 beep()
