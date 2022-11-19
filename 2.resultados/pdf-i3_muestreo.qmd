@@ -176,20 +176,25 @@ pob.chile <- 15200840
 tabla <- datos %>% 
   mutate(fexp = pesos/sum(pesos)*pob.chile)
 
-
 tabla_datos7 <- cro(tabla$P2v, tabla$P1v, weight = tabla$fexp)
 
 tabla_datos7 <- tabla_datos7[1:5,2:11]
 
 tabla_datos7[is.na(tabla_datos7)] = 0
 
-tabla_datos7 <- rbind(tabla_datos7 ,colSums(tabla_datos7))
+tabla_datos7 <- cbind(tabla_datos7 ,rowSums(tabla_datos7))
 
-colnames(tabla_datos7) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+tabla_datos7 <- tabla_datos7[,11]
+
+tabla_datos7 <- matrix(c(tabla_datos7,sum(tabla_datos7)),ncol=1)
+
+tabla_datos7 <- cbind(trunc(tabla_datos7),round(tabla_datos7[,1]/pob.chile*100,2))
+
 row.names(tabla_datos7) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+colnames(tabla_datos7) <- c("Cantidad de Votos", "Porcentaje")
 
-knitr::kable(tabla_datos7, digits = 0, align = "c", format="latex") %>% 
-  kable_styling(full_width=T, position="center") 
+knitr::kable(tabla_datos7, align = "c", format="latex") %>% 
+  kable_styling(full_width=F, position="center")
 ```
 
 
@@ -205,13 +210,19 @@ tabla_datos8 <- tabla_datos8[1:5,2:11]
 
 tabla_datos8[is.na(tabla_datos8)] = 0
 
-tabla_datos8 <- rbind(tabla_datos8 ,colSums(tabla_datos8)
+tabla_datos8 <- cbind(tabla_datos8 ,rowSums(tabla_datos8))
 
-colnames(tabla_datos8) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+tabla_datos8 <- tabla_datos8[,11]
+
+tabla_datos8 <- matrix(c(tabla_datos8,sum(tabla_datos8)),ncol=1)
+
+tabla_datos8 <- cbind(trunc(tabla_datos8),round(tabla_datos8[,1]/pob.chile*100,2))
+
 row.names(tabla_datos8) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+colnames(tabla_datos8) <- c("Cantidad de Votos", "Porcentaje")
 
-knitr::kable(tabla_datos8, digits = 0, align = "c", format="latex") %>% 
-  kable_styling(full_width=T, position="center") 
+knitr::kable(tabla_datos8,align = "c", format="latex") %>% 
+  kable_styling(full_width=F, position="center") 
 ```
 
 
@@ -227,13 +238,19 @@ tabla_datos9 <- tabla_datos9[1:5,2:11]
 
 tabla_datos9[is.na(tabla_datos9)] = 0
 
-tabla_datos9 <- rbind(tabla_datos9 ,colSums(tabla_datos9))
+tabla_datos9 <- cbind(tabla_datos9 ,rowSums(tabla_datos9))
 
-colnames(tabla_datos9) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
+tabla_datos9 <- tabla_datos9[,11]
+
+tabla_datos9 <- matrix(c(tabla_datos9,sum(tabla_datos9)),ncol=1)
+
+tabla_datos9 <- cbind(trunc(tabla_datos9),round(tabla_datos9[,1]/pob.chile*100,2))
+
 row.names(tabla_datos9) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+colnames(tabla_datos9) <- c("Cantidad de Votos", "Porcentaje")
 
-knitr::kable(tabla_datos9, digits = 0, align = "c", format="latex") %>% 
-  kable_styling(full_width=T, position="center") 
+knitr::kable(tabla_datos9, align = "c", format="latex") %>% 
+  kable_styling(full_width=F, position="center") 
 ```
 
 ### Ponderador de d)
@@ -248,13 +265,19 @@ tabla_datos10 <- tabla_datos10[1:5,2:11]
 
 tabla_datos10[is.na(tabla_datos10)] = 0
 
-tabla_datos10 <- rbind(tabla_datos10 ,colSums(tabla_datos10))
+tabla_datos10 <- cbind(tabla_datos10 ,rowSums(tabla_datos10))
 
-colnames(tabla_datos10) <- c("Boric", "Kast", "Provoste","Sichel", "Ártes", "Enriquez", "Parisi", "No vote", "Blanco \n /Nulo","No sabe")
-row.names(tabla_datos10) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe", "Total")
+tabla_datos10 <- tabla_datos10[,11]
 
-knitr::kable(tabla_datos10, digits = 0, align = "c", format="latex") %>% 
-  kable_styling(full_width=T, position="center") 
+tabla_datos10 <- matrix(c(tabla_datos10,sum(tabla_datos10)),ncol=1)
+
+tabla_datos10 <- cbind(trunc(tabla_datos10),round(tabla_datos10[,1]/pob.chile*100,2))
+
+row.names(tabla_datos10) <- c("Boric", "Kast","Nulo", "No Votaré","No sabe","Total")
+colnames(tabla_datos10) <- c("Cantidad de Votos", "Porcentaje")
+
+knitr::kable(tabla_datos10, align = "c", format="latex") %>% 
+  kable_styling(full_width=F, position="center") 
 ```
 
 
